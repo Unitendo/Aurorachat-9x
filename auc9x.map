@@ -1,0 +1,653 @@
+WATCOM Linker Version 11.0
+Copyright by Sybase, Inc., and its subsidiaries, 1985, 1997.
+Created on:       26/05/23 23:45:52
+Executable Image: auc9x.exe
+creating a Windows NT windowed executable
+
+
+                        +------------+
+                        |   Groups   |
+                        +------------+
+
+Group                           Address              Size
+=====                           =======              ====
+
+.idata                          0040c000             0000083e
+DGROUP                          0040d000             00018f40
+
+
+
+                        +--------------+
+                        |   Segments   |
+                        +--------------+
+
+Segment                Class          Group          Address         Size
+=======                =====          =====          =======         ====
+
+BEGTEXT                CODE           AUTO           00401000        00000007
+_TEXT                  CODE           AUTO           00401010        0000a600
+TRANSFER CODE          CODE           AUTO           0040b610        000001f2
+.idata                 .idata         .idata         0040c000        0000083e
+_NULL                  BEGDATA        DGROUP         0040d000        00000004
+_AFTERNULL             BEGDATA        DGROUP         0040d004        00000000
+CONST                  DATA           DGROUP         0040d004        00000840
+CONST2                 DATA           DGROUP         0040d844        00000038
+_DATA                  DATA           DGROUP         0040d87c        000075d9
+XIB                    DATA           DGROUP         00414e56        00000000
+XI                     DATA           DGROUP         00414e56        0000001e
+XIE                    DATA           DGROUP         00414e74        00000000
+YIB                    DATA           DGROUP         00414e74        00000000
+YI                     DATA           DGROUP         00414e74        00000018
+YIE                    DATA           DGROUP         00414e8c        00000000
+TIB                    DATA           DGROUP         00414e8c        00000000
+TI                     DATA           DGROUP         00414e8c        00000000
+TIE                    DATA           DGROUP         00414e8c        00000000
+DATA                   DATA           DGROUP         00414e8c        00000000
+_BSS                   BSS            DGROUP         00415010        00000f30
+STACK                  STACK          DGROUP         00415f40        00010000
+
+
+                        +----------------+
+                        |   Memory Map   |
+                        +----------------+
+
+* = unreferenced symbol
++ = symbol only referenced locally
+
+Address        Symbol
+=======        ======
+
+Module: credits.obj(D:\aurorachat\credits.c)
+00401010+      _Credits_WP@16
+0040120d       Credits_init_
+00401293       Credits_spawn_
+0040d844+      _CREDITS_WINCLASS
+00415010+      _Credits_creditbmp
+Module: ipsetup.obj(D:\aurorachat\ipsetup.c)
+004012f2+      _IPSetup_WP@16
+00401639       IPSetup_init_
+004016bf       IPSetup_spawn_
+0040d850+      _IPSETUP_WINCLASS
+Module: login.obj(D:\aurorachat\login.c)
+004017da+      Login_startswith_
+00401862+      _Login_WP@16
+00401e03+      Login_createWC_
+00401e89       Login_main_
+0040d85c+      _LOGIN_WINCLASS
+0040d87c       _Login_tokenbuf
+0040e87c       _Login_targetip
+0040e8bc       _Login_httpport
+0040e8be       _Login_tcpport
+0040e8c0+      _Login_done
+00415014+      _Login_logobmp
+Module: main.obj(D:\aurorachat\main.c)
+00401fcb*      _WinMain@16
+Module: rooms.obj(D:\aurorachat\rooms.c)
+0040402f+      _Rooms_WP@16
+004046d1       Rooms_init_
+00404757       Rooms_main_
+0040d868+      _ROOMS_WINCLASS
+0040e8c4+      _Rooms_roombuf
+0040f8c4+      _Rooms_roomname
+004108c4+      _Rooms_v6socket
+004108c8+      _Rooms_messagebuffer
+Module: v6.obj(D:\aurorachat\v6.c)
+0040485a       V6_init_
+004048bb*      V6_end_
+004048e1       V6_connect_
+0040496a*      V6_stripline_
+004049ae       V6_onconnecterr_
+00404a0d+      V6_httppost_
+00404c51       V6_loginrequest_
+00404cc4       V6_signuprequest_
+00404d37       V6_roomrequest_
+00404d81       V6_messagerequest_
+Module: E:\lib386\nt\clib3r.lib(stk)
+00404df3       __CHK
+00404e03*      __STK
+00404e22*      __STKOVERFLOW_
+00404e32*      __GRO
+00404e52*      __alloca_probe
+Module: E:\lib386\nt\clib3r.lib(_isnprin)
+00404e66       _snprintf_
+Module: E:\lib386\nt\clib3r.lib(sscanf)
+00404ea0+      vsscanf_
+00404ec8       sscanf_
+Module: E:\lib386\nt\clib3r.lib(strlen)
+00404ef0       strlen_
+Module: E:\lib386\nt\clib3r.lib(strtok)
+00404f10       strtok_
+Module: E:\lib386\nt\clib3r.lib(cstrtwwt)
+00404fb6*      _wstart_
+00404fb6*      _wstart2_
+00404fb6*      WinMainCRTStartup
+Module: E:\lib386\nt\clib3r.lib(strncpy)
+00405030       strncpy_
+Module: E:\lib386\nt\clib3r.lib(strncat)
+00405060       strncat_
+Module: E:\lib386\nt\clib3r.lib(strncmp)
+004050a0       strncmp_
+Module: E:\lib386\nt\clib3r.lib(xmsgwnt)
+004050d0+      __exit_with_msg_
+0040510c*      __fatal_runtime_error_
+Module: E:\lib386\nt\clib3r.lib(mainwnt)
+00415020+      ___Is_DLL
+004148e0*      ___TlsIndex
+004148e4*      ___GetThreadPtr
+004148e8*      __AccessFileH
+004148ec*      __ReleaseFileH
+004148f0*      __InitAccessH
+004148f4*      __FiniAccessH
+004148f8*      __AccessIOB
+004148fc*      __ReleaseIOB
+00414900*      __AccessNHeap
+00414904*      __AccessFHeap
+00414908*      __ReleaseNHeap
+00405130*      __threadid_
+00405144+      __sig_null_rtn_
+00405158+      __NTInit_
+00405388*      __NTMainInit_
+004053dc*      __exit_
+0041490c*      __ReleaseFHeap
+00414910*      __AccessTDList
+00414914*      __ReleaseTDList
+00414918*      __AccessFList
+0041491c*      __ReleaseFList
+00414920+      __ThreadExitRtn
+00414924+      ___sig_init_rtn
+00414928*      ___sig_fini_rtn
+0041492c+      ___process_fini
+0041502c+      ___FirstThreadData
+Module: E:\lib386\nt\clib3r.lib(bprintf)
+00405480+      _vbprintf_
+004054ac*      _bprintf_
+Module: E:\lib386\nt\clib3r.lib(scnf)
+004054f0*      __scnf_
+Module: E:\lib386\nt\clib3r.lib(bits)
+00406400*      __setbits_
+0040d874*      __Bits
+Module: E:\lib386\nt\clib3r.lib(wmainwnt)
+00406450*      __WinMain
+Module: E:\lib386\nt\clib3r.lib(segdefns)
+00401003*      ___begtext
+0040d000*      __nullarea
+00414e56*      __Start_XI
+00414e74*      __End_XI
+00414e74*      __Start_YI
+00414e8c*      __End_YI
+Module: E:\lib386\nt\clib3r.lib(nthdl)
+00414938*      ___FileHandleIDs
+00414940+      ___FakeFileHandles
+00406500*      __NTAtMaxFiles_
+00406554*      __NTAddFileHandle_
+004065d8*      __NTAddSpecificFileHandle_
+004066ac*      __NTRemoveFileHandle_
+004066e0*      __NTInitFileHandles_
+00406740+      __NTGetFakeHandle_
+Module: E:\lib386\nt\clib3r.lib(enterdb)
+00406820*      __EnterWVIDEO_
+0041494c+      ___WD_Present
+Module: E:\lib386\nt\clib3r.lib(mthread)
+00406854+      __NTGetCriticalSection_
+004068f8+      __NTDeleteCriticalSection_
+00406928+      __NTFreeCriticalSection_
+00406980+      __CloseSemaphore_
+00406990+      __AccessIOB_
+0040699c+      __ReleaseIOB_
+004069a8+      __AccessFileH_
+004069b8+      __ReleaseFileH_
+004069c8+      __InitAccessH_
+004069d0+      __FiniAccessH_
+004069ec+      __AccessNHeap_
+004069f4+      __ReleaseNHeap_
+00406a00+      __AccessFHeap_
+00406a08+      __ReleaseFHeap_
+00406a14+      __AccessTDList_
+00406a1c+      __ReleaseTDList_
+00406a24+      __AccessFList_
+00406a2c+      __AccessSemaphore_
+00406a88+      __ReleaseFList_
+00406a90+      __ReleaseSemaphore_
+00406ab8+      __MultipleThread_
+00406afc*      __AllocInitThreadData_
+00406b38*      __NTThreadInit_
+00406b98*      __NTAddThread_
+00406bec+      __NTRemoveThread_
+00406c50+      __NTThreadFini_
+00406c74*      __InitMultipleThread_
+00414950+      ___AccessSema4
+00414954+      ___ReleaseSema4
+00414958+      ___CloseSema4
+Module: E:\lib386\nt\clib3r.lib(crwdata)
+0041497c*      __psp
+004149a7*      __osmajor
+004149a8*      __osminor
+004149a9*      __osbuild
+004149ab*      __osver
+004149af*      __winmajor
+004149b3*      __winminor
+004149b7*      __winver
+0041499e*      __Extender
+0041499f*      __ExtenderSubtype
+004149a0*      __X32VM
+00414980*      __x386_stacklow
+00414964*      __LpCmdLine
+00414968*      __LpPgmName
+0041496c*      __LpDllName
+00414970*      __LpwCmdLine
+00414974*      __LpwPgmName
+00414978*      __LpwDllName
+0041495c*      __dynend
+00414960*      __curbrk
+00414980*      __STACKLOW
+00414984*      __STACKTOP
+00414988*      __ASTACKSIZ
+0041498c*      __ASTACKPTR
+00414990*      __cbyte
+00414994*      __cbyte2
+00414998*      __child
+004149a1*      __Envptr
+004149a5*      __Envseg
+0041499c*      __no87
+004149bb*      __FPE_handler
+004149bb*      ___FPE_handler
+Module: E:\lib386\nt\clib3r.lib(environ)
+00415dc0*      ___env_mask
+00415dc4*      _environ
+00415dc8*      __wenviron
+Module: E:\lib386\nt\clib3r.lib(getmodfn)
+00406e10*      __lib_GetModuleFileNameW_
+Module: E:\lib386\nt\clib3r.lib(strdup)
+00406eb0*      __clib_strdup_
+Module: E:\lib386\nt\clib3r.lib(istable)
+004149c0*      __IsTable
+Module: E:\lib386\nt\clib3r.lib(ustrdup)
+00406f00*      __clib_wcsdup_
+Module: E:\lib386\nt\clib3r.lib(stklmwnt)
+00406f30*      __init_stack_limits_
+Module: E:\lib386\nt\clib3r.lib(excptwnt)
+00407218+      ___ExceptionFilter
+004073e0*      __NewExceptionHandler_
+0040742c*      __DoneExceptionHandler_
+00414ac4+      ___oscode_check_func
+00414ac8+      ___raise_func
+00415dd0*      _sw
+00415dd4+      ___ExceptionHandled
+Module: E:\lib386\nt\clib3r.lib(initrtns)
+0040745c*      __InitRtns
+004074ac*      __FiniRtns
+Module: E:\lib386\nt\clib3r.lib(nfree)
+00407500*      _nfree_
+00407500*      free_
+00415de0+      ___MiniHeapFreeRover
+Module: E:\lib386\nt\clib3r.lib(prtf)
+00407610*      __prtf_
+Module: E:\lib386\nt\clib3r.lib(mbisdbcs)
+00415df0*      ___IsDBCS
+Module: E:\lib386\nt\clib3r.lib(mbislead)
+00408460*      _ismbblead_
+00415e00*      ___MBCSIsTable
+Module: E:\lib386\nt\clib3r.lib(mbtowc)
+00408480*      mbtowc_
+Module: E:\lib386\nt\clib3r.lib(memset)
+00408520*      memset_
+Module: E:\lib386\nt\clib3r.lib(noefgfmt)
+00414ae0*      ___EFG_printf
+00414ae4*      ___EFG_scanf
+Module: E:\lib386\nt\clib3r.lib(fdfs)
+00408552*      __FDFS
+Module: E:\lib386\nt\clib3r.lib(i8m)
+0040859e*      __I8M
+0040859e*      __U8M
+Module: E:\lib386\nt\clib3r.lib(tolower)
+004085c0*      tolower_
+Module: E:\lib386\nt\clib3r.lib(regdata)
+004085d0*      __RegisterThreadDataSize_
+00414ae8*      ___ThreadDataSize
+Module: E:\lib386\nt\clib3r.lib(stackwnt)
+00408600*      stackavail_
+Module: E:\lib386\nt\clib3r.lib(cinit)
+00408610*      __CommonInit_
+Module: E:\lib386\nt\clib3r.lib(exit)
+00408620+      __null_int23_exit_
+00408624*      exit_
+0040866c+      _exit_
+00414aec+      ___int23_exit
+00414af0+      ___FPE_handler_exit
+Module: E:\lib386\nt\clib3r.lib(dosseg)
+00001234*      __DOSseg__
+Module: E:\lib386\nt\clib3r.lib(iomode)
+004086a0*      __IOMode_
+004086f8*      __SetIOMode_
+00414af4*      ___NFiles
+00414af8+      ___init_mode
+00414b48+      __iomode
+Module: E:\lib386\nt\clib3r.lib(nrealloc)
+00408720*      _nrealloc_
+00408720*      realloc_
+Module: E:\lib386\nt\clib3r.lib(calloc)
+004087a0*      calloc_
+Module: E:\lib386\nt\clib3r.lib(trdlist)
+004087c0*      __GetThreadData_
+004087fc*      __ReallocThreadData_
+004088d0*      __AddThreadData_
+00408934*      __RemoveThreadData_
+00408980*      __ResizeThreadDataList_
+004089a8*      __FreeThreadDataList_
+Module: E:\lib386\nt\clib3r.lib(mthrdini)
+004089e0*      __InitThreadData_
+Module: E:\lib386\nt\clib3r.lib(trdalloc)
+00408a10*      __FiniThreadProcessing_
+Module: E:\lib386\nt\clib3r.lib(nheapmin)
+00408a20*      _nheapshrink_
+00408a20*      _nheapmin_
+00408a20*      _heapmin_
+00408a20*      _heapshrink_
+Module: E:\lib386\nt\clib3r.lib(setenvp)
+00408af8*      __setenvp_
+00408bdc*      __freeenvp_
+Module: E:\lib386\nt\clib3r.lib(nmalloc)
+00408c30*      _nmalloc_
+00408c30*      malloc_
+00414b4c*      ___nheapbeg
+00414b50*      ___MiniHeapRover
+00414b54*      ___LargestSizeB4MiniHeapRover
+Module: E:\lib386\nt\clib3r.lib(ustrlen)
+00408d20*      wcslen_
+Module: E:\lib386\nt\clib3r.lib(memcpy)
+00408d40*      memcpy_
+Module: E:\lib386\nt\clib3r.lib(conutwnt)
+00408d70*      __NTRealKey_
+00408e08*      __NTConsoleInput_
+00408e14*      __NTConsoleOutput_
+Module: E:\lib386\nt\clib3r.lib(fclex387)
+00408e20*      _ClearFPE_
+Module: E:\lib386\nt\clib3r.lib(signlwnt)
+00414b60+      _SignalTable
+00408e30+      __SetSignalFunc_
+00408e78+      __GetSignalFunc_
+00408e9c+      __GetSignalOSCode_
+00408ec0+      __CheckSignalExCode_
+00408fe8+      __sigabort_
+00408ff4*      __sigfpe_handler_
+00409038*      signal_
+004090e8+      raise_
+00409158+      __SigInit_
+004091a0+      __SigFini_
+004091d0+      __sig_init_
+Module: E:\lib386\nt\clib3r.lib(mem)
+004091f0*      __MemAllocator
+004092a0*      __MemFree
+Module: E:\lib386\nt\clib3r.lib(heapmod)
+00415f30*      ___nheap_clean
+00415f31*      ___fheap_clean
+Module: E:\lib386\nt\clib3r.lib(wctomb)
+004093d0*      wctomb_
+Module: E:\lib386\nt\clib3r.lib(itoa)
+00409410+      utoa_
+0040945c*      itoa_
+Module: E:\lib386\nt\clib3r.lib(lltoa)
+00409480*      __clib_ulltoa_
+00409518*      __clib_lltoa_
+Module: E:\lib386\nt\clib3r.lib(ltoa)
+00409570*      ultoa_
+004095bc*      ltoa_
+Module: E:\lib386\nt\clib3r.lib(toupper)
+004095e0*      toupper_
+Module: E:\lib386\nt\clib3r.lib(mbinit)
+004095f0*      __mbinit_
+00414c44*      ___MBCodePage
+Module: E:\lib386\nt\clib3r.lib(mbclen)
+00409760*      _mbclen_
+Module: E:\lib386\nt\clib3r.lib(__stos)
+00409790*      __STOSB
+004097c7*      __STOSD
+Module: E:\lib386\nt\clib3r.lib(winrtns)
+00414c48*      __WindowsIsWindowedHandle
+00414c4c*      __WindowsRemoveWindowedHandle
+00414c50*      __WindowsNewWindow
+00414c54*      __WindowsCloseWindow
+00414c58*      __WindowsSetAbout
+00414c5c*      __WindowsSetAppTitle
+00414c60*      __WindowsSetConTitle
+00414c64*      __WindowsDestroyOnClose
+00414c68*      __WindowsYieldControl
+00414c6c*      __WindowsShutDown
+00414c70*      __WindowsStdin
+00414c74*      __WindowsStdout
+00414c78*      __WindowsKbhit
+00414c7c*      __WindowsGetch
+00414c80*      __WindowsGetche
+00414c84*      __WindowsPutch
+00414c88*      __WindowExitRtn
+Module: E:\lib386\nt\clib3r.lib(isattwnt)
+00409840*      isatty_
+Module: E:\lib386\nt\clib3r.lib(nmsize)
+004098b0*      _nmsize_
+004098b0*      _msize_
+Module: E:\lib386\nt\clib3r.lib(nexpand)
+004098c0*      _nexpand_
+004098c0*      _expand_
+004098fc+      __HeapManager_expand_
+Module: E:\lib386\nt\clib3r.lib(register)
+00409ac4*      _beginthread_
+00409acc*      _endthread_
+00409ad4*      __initthread_
+00409adc*      __RegisterThreadData_
+Module: E:\lib386\nt\clib3r.lib(dofilstr)
+00409b20*      __ParsePosixHandleStr_
+Module: E:\lib386\nt\clib3r.lib(clearenv)
+00409c40*      clearenv_
+Module: E:\lib386\nt\clib3r.lib(grownear)
+00409e14*      __ExpandDGROUP_
+Module: E:\lib386\nt\clib3r.lib(nmemneed)
+00409e80*      __nmemneed_
+Module: E:\lib386\nt\clib3r.lib(seterrno)
+00409e90*      __set_errno_
+00409ea0*      __set_EDOM_
+00409eb4*      __set_ERANGE_
+00409ec8*      __set_EINVAL_
+00409ed8*      __set_doserrno_
+Module: E:\lib386\nt\clib3r.lib(abort)
+00409ef0*      abort_
+00409ef8*      __terminate_
+00414c98*      ___abort
+Module: E:\lib386\nt\clib3r.lib(cntrl87)
+00409f10*      _control87_
+Module: E:\lib386\nt\clib3r.lib(i8d)
+00409f5c*      __I8D
+00409fb1*      __U8D
+Module: E:\lib386\nt\clib3r.lib(thredwnt)
+0040a0d4*      __CBeginThread_
+0040a1c0*      __CEndThread_
+Module: E:\lib386\nt\clib3r.lib(getenv)
+0040a1f0*      getenv_
+Module: E:\lib386\nt\clib3r.lib(strtol)
+0040a3a4*      strtoul_
+0040a3b0*      strtol_
+Module: E:\lib386\nt\clib3r.lib(putenv)
+0040a420*      putenv_
+0040a5dc+      __putenv_
+Module: E:\lib386\nt\clib3r.lib(heapen)
+0040a890*      _heapenable_
+00414d28*      ___heap_enabled
+Module: E:\lib386\nt\clib3r.lib(amblksiz)
+00414d2c*      __amblksiz
+Module: E:\lib386\nt\clib3r.lib(01h)
+00414d30*      __8087
+00414d31*      __real87
+Module: E:\lib386\nt\clib3r.lib(mbsnicmp)
+0040a8c0*      _mbsnicmp_
+Module: E:\lib386\nt\clib3r.lib(mbschr)
+0040a940*      _mbschr_
+Module: E:\lib386\nt\clib3r.lib(mbslen)
+0040a9a0*      _mbslen_
+Module: E:\lib386\nt\clib3r.lib(dosret)
+0040a9d0*      _dosret0_
+0040a9d8*      _dosretax_
+0040a9dc*      __set_errno_dos_
+0040aa44*      __set_errno_nt_
+Module: E:\lib386\nt\clib3r.lib(mbstowcs)
+0040aa60*      mbstowcs_
+Module: E:\lib386\nt\clib3r.lib(uputenv)
+0040aae0*      _wputenv_
+0040ac78*      __wputenv_
+Module: E:\lib386\nt\clib3r.lib(memmove)
+0040af10*      memmove_
+Module: E:\lib386\nt\clib3r.lib(chk8087)
+0040af6c+      __init_8087_
+0040afa0*      _fpreset_
+0040afac*      __chk8087_
+Module: E:\lib386\nt\clib3r.lib(mbterm)
+0040aff0*      _mbterm_
+Module: E:\lib386\nt\clib3r.lib(mbcicmp)
+0040b030*      _mbcicmp_
+Module: E:\lib386\nt\clib3r.lib(mbsinc)
+0040b090*      _mbsinc_
+Module: E:\lib386\nt\clib3r.lib(mbconv)
+0040b0c0*      _mbvtop_
+Module: E:\lib386\nt\clib3r.lib(mbccmp)
+0040b0e0*      _mbccmp_
+Module: E:\lib386\nt\clib3r.lib(ustrchr)
+0040b140*      wcschr_
+Module: E:\lib386\nt\clib3r.lib(setenvar)
+0040b170*      __lib_SetEnvironmentVariableW_
+Module: E:\lib386\nt\clib3r.lib(crtwenv)
+0040b270*      __create_wide_environment_
+Module: E:\lib386\nt\clib3r.lib(wcstombs)
+0040b2d0*      wcstombs_
+Module: E:\lib386\nt\clib3r.lib(utoupper)
+0040b390*      towupper_
+Module: E:\lib386\nt\clib3r.lib(save8087)
+00414d48*      ___Save8087
+00414d4c*      ___Rest8087
+Module: E:\lib386\nt\clib3r.lib(8087cw)
+00414d50*      __8087cw
+Module: E:\lib386\nt\clib3r.lib(init8087)
+0040b3b0*      __init_80x87
+Module: E:\lib386\nt\clib3r.lib(mbccpy)
+0040b3e0*      _mbccpy_
+Module: E:\lib386\nt\clib3r.lib(mbsupr)
+0040b420*      _mbsupr_
+Module: E:\lib386\nt\clib3r.lib(mbsnextc)
+0040b470*      _mbsnextc_
+Module: E:\lib386\nt\clib3r.lib(mbcupper)
+0040b4b0*      _mbctoupper_
+Module: E:\lib386\nt\clib3r.lib(mbdtoupp)
+0040b520*      _mbdtoupper_
+Module: E:\lib386\nt\clib3r.lib(ismbdlow)
+0040b540*      _ismbdlower_
+Module: E:\lib386\nt\clib3r.lib(mbislegl)
+0040b590*      _ismbclegal_
+Module: E:\lib386\nt\clib3r.lib(mbistrai)
+0040b5d0*      _ismbbtrail_
+Module: E:\lib386\nt\clib3r.lib(isktable)
+00414d54*      __IsKTable
+
+
+                        +----------------------+
+                        |   Imported Symbols   |
+                        +----------------------+
+
+Symbol                              Module
+======                              ======
+
+_ioctlsocket@12                     WSOCK32.dll
+_recv@16                            WSOCK32.dll
+_WSAStartup@8                       WSOCK32.dll
+_WSACleanup@0                       WSOCK32.dll
+_htons@4                            WSOCK32.dll
+_inet_addr@4                        WSOCK32.dll
+_socket@12                          WSOCK32.dll
+_connect@12                         WSOCK32.dll
+_WSAGetLastError@0                  WSOCK32.dll
+_send@16                            WSOCK32.dll
+_SetStdHandle@8                     KERNEL32.dll
+_GetStdHandle@4                     KERNEL32.dll
+_CreateEventA@16                    KERNEL32.dll
+_CloseHandle@4                      KERNEL32.dll
+_InitializeCriticalSection@4        KERNEL32.dll
+_DeleteCriticalSection@4            KERNEL32.dll
+_GetCurrentThreadId@0               KERNEL32.dll
+_EnterCriticalSection@4             KERNEL32.dll
+_LeaveCriticalSection@4             KERNEL32.dll
+_GetLastError@0                     KERNEL32.dll
+_TlsGetValue@4                      KERNEL32.dll
+_SetLastError@4                     KERNEL32.dll
+_TlsAlloc@0                         KERNEL32.dll
+_TlsSetValue@8                      KERNEL32.dll
+_TlsFree@4                          KERNEL32.dll
+_GetModuleFileNameW@12              KERNEL32.dll
+_MultiByteToWideChar@24             KERNEL32.dll
+_VirtualQuery@12                    KERNEL32.dll
+_LoadLibraryA@4                     KERNEL32.dll
+_GetProcAddress@8                   KERNEL32.dll
+_UnhandledExceptionFilter@4         KERNEL32.dll
+_SetUnhandledExceptionFilter@4      KERNEL32.dll
+_VirtualFree@12                     KERNEL32.dll
+_FreeEnvironmentStringsA@4          KERNEL32.dll
+_CreateFileA@28                     KERNEL32.dll
+_SetConsoleCtrlHandler@8            KERNEL32.dll
+_WideCharToMultiByte@32             KERNEL32.dll
+_GetACP@0                           KERNEL32.dll
+_GetOEMCP@0                         KERNEL32.dll
+_GetCPInfo@8                        KERNEL32.dll
+_GetFileType@4                      KERNEL32.dll
+_VirtualAlloc@16                    KERNEL32.dll
+_SetEvent@4                         KERNEL32.dll
+_GetCurrentThread@0                 KERNEL32.dll
+_CreateThread@24                    KERNEL32.dll
+_WaitForSingleObject@8              KERNEL32.dll
+_ExitThread@4                       KERNEL32.dll
+_SetEnvironmentVariableA@8          KERNEL32.dll
+_SetEnvironmentVariableW@8          KERNEL32.dll
+_CharUpperBuffA@8                   USER32.dll
+_CreateWindowExA@48                 USER32.dll
+_DestroyWindow@4                    USER32.dll
+_DefWindowProcA@16                  USER32.dll
+_LoadCursorA@8                      USER32.dll
+_LoadIconA@8                        USER32.dll
+_RegisterClassA@4                   USER32.dll
+_GetDlgItemTextA@16                 USER32.dll
+_PostQuitMessage@4                  USER32.dll
+_GetModuleHandleA@4                 KERNEL32.dll
+_LoadBitmapA@8                      USER32.dll
+_BeginPaint@8                       USER32.dll
+_CreateCompatibleDC@4               GDI32.dll
+_SelectObject@8                     GDI32.dll
+_GetObjectA@12                      GDI32.dll
+_BitBlt@36                          GDI32.dll
+_DeleteDC@4                         GDI32.dll
+_EndPaint@8                         USER32.dll
+_SetDlgItemTextA@12                 USER32.dll
+_MessageBoxA@16                     USER32.dll
+_GetMessageA@16                     USER32.dll
+_TranslateMessage@4                 USER32.dll
+_DispatchMessageA@4                 USER32.dll
+_GetClientRect@8                    USER32.dll
+_SetTimer@16                        USER32.dll
+_GetDlgItem@8                       USER32.dll
+_SendMessageA@16                    USER32.dll
+_WriteFile@20                       KERNEL32.dll
+_ExitProcess@4                      KERNEL32.dll
+_GetEnvironmentStrings@0            KERNEL32.dll
+_GetVersion@0                       KERNEL32.dll
+_GetModuleFileNameA@12              KERNEL32.dll
+_GetCommandLineA@0                  KERNEL32.dll
+_GetCommandLineW@0                  KERNEL32.dll
+
+
+                        +--------------------+
+                        |   Libraries Used   |
+                        +--------------------+
+
+
+
+                        +-----------------------+
+                        |   Linker Statistics   |
+                        +-----------------------+
+
+Stack size:  00010000 (65536.)
+Memory size:  00023f80 (147328.)
+Entry point address: 00404fb6
+Link time: 00:00.00

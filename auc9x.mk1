@@ -1,0 +1,56 @@
+!define BLANK ""
+d:\aurorachat\credits.obj : d:\aurorachat\credits.c .AUTODEPEND
+ @d:
+ cd d:\aurorachat
+ *wcc386 credits.c -i=E:\h;E:\h\nt -w4 -e25 -zq -od -d2 -5r -bt=nt -mf
+
+d:\aurorachat\ipsetup.obj : d:\aurorachat\ipsetup.c .AUTODEPEND
+ @d:
+ cd d:\aurorachat
+ *wcc386 ipsetup.c -i=E:\h;E:\h\nt -w4 -e25 -zq -od -d2 -5r -bt=nt -mf
+
+d:\aurorachat\login.obj : d:\aurorachat\login.c .AUTODEPEND
+ @d:
+ cd d:\aurorachat
+ *wcc386 login.c -i=E:\h;E:\h\nt -w4 -e25 -zq -od -d2 -5r -bt=nt -mf
+
+d:\aurorachat\main.obj : d:\aurorachat\main.c .AUTODEPEND
+ @d:
+ cd d:\aurorachat
+ *wcc386 main.c -i=E:\h;E:\h\nt -w4 -e25 -zq -od -d2 -5r -bt=nt -mf
+
+d:\aurorachat\rooms.obj : d:\aurorachat\rooms.c .AUTODEPEND
+ @d:
+ cd d:\aurorachat
+ *wcc386 rooms.c -i=E:\h;E:\h\nt -w4 -e25 -zq -od -d2 -5r -bt=nt -mf
+
+d:\aurorachat\v6.obj : d:\aurorachat\v6.c .AUTODEPEND
+ @d:
+ cd d:\aurorachat
+ *wcc386 v6.c -i=E:\h;E:\h\nt -w4 -e25 -zq -od -d2 -5r -bt=nt -mf
+
+d:\aurorachat\auc9x.res : d:\aurorachat\auc9x.rc .AUTODEPEND
+ @d:
+ cd d:\aurorachat
+ *wrc auc9x.rc -bt=nt -dWIN32 -d_WIN32 -d__NT__ -i=$[:;E:\h;E:\h\nt -q -ad -&
+r -fo=auc9x.res
+
+d:\aurorachat\auc9x.exe : d:\aurorachat\credits.obj d:\aurorachat\ipsetup.ob&
+j d:\aurorachat\login.obj d:\aurorachat\main.obj d:\aurorachat\rooms.obj d:\&
+aurorachat\v6.obj d:\aurorachat\common.h d:\aurorachat\credits.h d:\aurorach&
+at\ipsetup.h d:\aurorachat\login.h d:\aurorachat\rooms.h d:\aurorachat\v6.h &
+d:\aurorachat\auc9x.res .AUTODEPEND
+ @d:
+ cd d:\aurorachat
+ @%write auc9x.lk1 FIL credits.obj,ipsetup.obj,login.obj,main.obj,rooms.obj,&
+v6.obj
+ @%append auc9x.lk1 
+!ifneq BLANK ""
+ *wlib -q -n -b auc9x.imp 
+ @%append auc9x.lk1 LIBR auc9x.imp
+!endif
+!ifneq BLANK "auc9x.res"
+ @%append auc9x.lk1 op resource=auc9x.res
+!endif
+ *wlink name auc9x op inc SYS nt_win op m op maxe=25 op q op symf @auc9x.lk1
+

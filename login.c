@@ -1,0 +1,238 @@
+#include "login.h"
+#include "common.h"
+#include "v6.h"
+#include "rooms.h"
+#include "ipsetup.h"
+#include "credits.h"
+#include <stdio.h>
+
+char Login_tokenbuf[LOGIN_TOKENBUFSIZE] = {0};
+const char LOGIN_WINCLASS[] = "AUC LOGIN";
+
+char Login_targetip[64] = AUC_DEFAULTIP;
+short Login_httpport = AUC_DEFAULTHTTPPORT;
+short Login_tcpport = AUC_DEFAULTTCPPORT;
+
+HBITMAP Login_logobmp;
+
+int Login_done = 0;
+
+int Login_startswith(char *s1, char *s2) {
+        int l1, l2, i;
+        l1 = strlen(s1);
+        l2 = strlen(s2);
+        if(l1 < l2) return 1;
+        for(i=0;i<l2;i++) {
+                if(s1[i] != s2[i]) return 1;
+        }
+        return 0;
+}
+
+long PASCAL Login_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
+        switch(msg) {
+                case WM_DESTROY:
+                        PostQuitMessage(0);
+                break;
+
+                case WM_CREATE: {
+                        int x = 8;
+                        int y = 128;
+                        RECT clrect;
+                        GetClientRect(hwnd, &clrect);
+
+                        Login_logobmp = LoadBitmap(GetModuleHandle(NULL), "LOGO");
+                        if(Login_logobmp == NULL) {
+                            PostQuitMessage(1);
+                            return 0;
+                        }
+
+                        CreateWindow(
+                                "Static", "Username:", WS_CHILD | WS_VISIBLE | SS_LEFT,
+                                x, y, 80 - x, 16,
+                                hwnd, 0, NULL, NULL
+                        );
+
+                        CreateWindow(
+                                "Edit", NULL, WS_CHILD | WS_VISIBLE | WS_BORDER,
+                                80, y, 232, 24,
+                                hwnd, (HMENU) 4, NULL, NULL
+                        );
+
+                        y += 24;
+
+                        CreateWindow(
+                                "Static", "Password:", WS_CHILD | WS_VISIBLE | SS_LEFT,
+                                x, y, 80 - x, 16,
+                                hwnd, 0, NULL, NULL
+                        );
+
+                        CreateWindow(
+                                "Edit", NULL, WS_CHILD | WS_VISIBLE | WS_BORDER | ES_PASSWORD,
+                                80, y, 232, 24,
+                                hwnd, (HMENU) 5, NULL, NULL
+                        );
+
+                        y += 32;
+
+                        CreateWindow(
+                                "Button", "Log in", WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON,
+                                0, y, 320, 32,
+                                hwnd, (HMENU) 2, NULL, NULL
+                        );
+
+                        y += 32;
+
+                        CreateWindow(
+                                "Button", "Sign up", WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON,
+                                0, y, 320, 32,
+                                hwnd, (HMENU) 3, NULL, NULL
+                        );
+
+                        y += 32;
+
+                        CreateWindow(
+                                "Button", "Server IP Setup", WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON,
+                                0, y, 320, 32,
+                                hwnd, (HMENU) 7, NULL, NULL
+                        );
+
+                        CreateWindow(
+                                "Button", "9x Client by JakubKwantowy", WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON,
+                                0, clrect.bottom - 32, 320, 32,
+                                hwnd, (HMENU) 6, NULL, NULL
+                        );
+                } break;
+
+                case WM_PAINT: {
+                        HDC hdc;
+                        PAINTSTRUCT ps;
+                        HDC hdcmem;
+                        HBITMAP hbmold;
+                        BITMAP bm;
+                    
+                        hdc = BeginPaint(hwnd, &ps);
+                        hdcmem = CreateCompatibleDC(hdc);
+                        hbmold = SelectObject(hdcmem, Login_logobmp);
+
+                        GetObject(Login_logobmp, sizeof(bm), &bm);
+                        BitBlt(hdc, 0, 0, bm.bmWidth, bm.bmHeight, hdcmem, 0, 0, SRCCOPY);
+
+                        SelectObject(hdcmem, hbmold);
+                        DeleteDC(hdcmem);
+                        EndPaint(hwnd, &ps);
+                } break;
+
+                case WM_COMMAND: {
+                        switch(HIWORD(wparam)) {
+                                case BN_CLICKED:
+                                        switch(LOWORD(wparam)) {
+                                                char username[1024];
+                                                char password[1024];
+                                                int err;
+                                            
+                                                case 2:
+                                                        GetDlgItemText(hwnd, 4, username, 1023);
+                                                        GetDlgItemText(hwnd, 5, password, 1023);
+                                                        SetDlgItemText(hwnd, 5, "");
+                                                        err = V6_loginrequest(
+                                                                Login_targetip, Login_httpport,
+                                                                username, password,
+                                                                Login_tokenbuf, LOGIN_TOKENBUFSIZE
+                                                        );
+                                                        if(err)
+                                                                break;
+                                                        if(Login_startswith(Login_tokenbuf, "ERR_") == 0) {
+                                                                char buffer[4096];
+                                                                _snprintf(buffer, 4096, "Login Error: %s", Login_tokenbuf);
+                                                                MessageBox(hwnd, buffer, "Login Error", MB_ICONERROR);
+                                                                break;
+                                                        }
+                                                        strtok(Login_tokenbuf, "|");
+                                                        Login_done = 1;
+                                                        DestroyWindow(hwnd);
+                                                break;
+
+                                                case 3:
+                                                        GetDlgItemText(hwnd, 4, username, 1023);
+                                                        GetDlgItemText(hwnd, 5, password, 1023);
+                                                        SetDlgItemText(hwnd, 5, "");
+                                                        err = V6_signuprequest(
+                                                                Login_targetip, Login_httpport,
+                                                                username, password,
+                                                                Login_tokenbuf, LOGIN_TOKENBUFSIZE
+                                                        );
+                                                        if(err)
+                                                                break;
+                                                        if(Login_startswith(Login_tokenbuf, "ERR_") == 0) {
+                                                                char buffer[4096];
+                                                                _snprintf(buffer, 4096, "Login Error: %s", Login_tokenbuf);
+                                                                MessageBox(hwnd, buffer, "Login Error", MB_ICONERROR);
+                                                                break;
+                                                        }
+                                                        strtok(Login_tokenbuf, "|");
+                                                        Login_done = 1;
+                                                        DestroyWindow(hwnd);
+                                                break;
+
+                                                case 6:
+                                                        Credits_spawn(GetModuleHandle(NULL));
+                                                break;
+
+                                                case 7:
+                                                        IPSetup_spawn(GetModuleHandle(NULL));
+                                                break;
+                                        }
+                                break;
+                        }
+                } break;
+
+                default:
+                        return DefWindowProc(hwnd, msg, wparam, lparam);
+        }
+
+        return 0;
+}
+
+void Login_createWC(WNDCLASS *wc, HANDLE hi) {
+        wc->hInstance = hi;
+        wc->lpszClassName = LOGIN_WINCLASS;
+        wc->lpfnWndProc = Login_WP;
+        wc->hbrBackground = (HBRUSH) COLOR_WINDOW;
+        wc->hCursor = LoadCursor(0, IDC_ARROW);
+        wc->hIcon = LoadIcon(hi, "APPICON");
+
+        RegisterClass(wc);
+}
+
+int Login_main(HANDLE hInst, HANDLE hPrevInst, LPSTR cmdLine, int cmdshow) {
+        WNDCLASS wc = {0};
+        WNDCLASS wc_rooms = {0};
+        WNDCLASS wc_ip = {0};
+        WNDCLASS wc_cred = {0};
+        HWND hw;
+        MSG msg = {0};
+
+        Rooms_init(&wc_rooms, hInst);
+        IPSetup_init(&wc_ip, hInst);
+        Credits_init(&wc_cred, hInst);
+
+        Login_createWC(&wc, hInst);
+        hw = CreateWindow(
+                LOGIN_WINCLASS, "AuroraChat 9x Login",
+                WS_AUC,
+                CW_USEDEFAULT, CW_USEDEFAULT, 320, 480,
+                NULL, NULL, hInst, NULL
+        );
+
+        if(hw == NULL) return 1;
+
+        while(GetMessage(&msg, NULL, 0, 0) > 0) {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+        }
+
+        if(Login_done) Rooms_main(hInst);
+
+        return 0;
+}
+
