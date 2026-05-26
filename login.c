@@ -13,6 +13,8 @@ char Login_targetip[64] = AUC_DEFAULTIP;
 short Login_httpport = AUC_DEFAULTHTTPPORT;
 short Login_tcpport = AUC_DEFAULTTCPPORT;
 
+#define LASTUSERFILE "lastuser.txt"
+
 HBITMAP Login_logobmp;
 
 int Login_done = 0;
@@ -28,6 +30,22 @@ int Login_startswith(char *s1, char *s2) {
         return 0;
 }
 
+void Login_saveUserData(const char *username, const char *password) {
+        FILE *f = fopen(LASTUSERFILE, "w");
+        if(f == NULL) return;
+
+        fputs(username, f);
+        fputc('\n', f);
+        fputs(password, f);
+        fputc('\n', f);
+        fputs(Login_targetip, f);
+        fputc('\n', f);
+        fprintf(f, "%d\n", Login_httpport);
+        fprintf(f, "%d\n", Login_tcpport);
+        
+        fclose(f);
+}
+
 long PASCAL Login_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
         switch(msg) {
                 case WM_DESTROY:
@@ -37,8 +55,33 @@ long PASCAL Login_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
                 case WM_CREATE: {
                         int x = 8;
                         int y = 128;
+                        
+                        FILE *lastuser;
+                        char lastusername[1024] = {0};
+                        char lastpassword[1024] = {0};
+
                         RECT clrect;
                         GetClientRect(hwnd, &clrect);
+
+                        lastuser = fopen(LASTUSERFILE, "r");
+                        if(lastuser) {
+                                char buffer[64] = {0};
+                            
+                                fgets(lastusername, 1023, lastuser);
+                                fgets(lastpassword, 1023, lastuser);
+                                fgets(Login_targetip, 63, lastuser);
+
+                                lastusername[strlen(lastusername)-1] = 0;
+                                lastpassword[strlen(lastpassword)-1] = 0;
+                                Login_targetip[strlen(Login_targetip)-1] = 0;
+
+                                fgets(buffer, 63, lastuser);
+                                sscanf(buffer, "%d", &Login_httpport);
+                                fgets(buffer, 63, lastuser);
+                                sscanf(buffer, "%d", &Login_tcpport);
+
+                                fclose(lastuser);
+                        }
 
                         Login_logobmp = LoadBitmap(GetModuleHandle(NULL), "LOGO");
                         if(Login_logobmp == NULL) {
@@ -53,7 +96,7 @@ long PASCAL Login_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
                         );
 
                         CreateWindow(
-                                "Edit", NULL, WS_CHILD | WS_VISIBLE | WS_BORDER,
+                                "Edit", lastusername, WS_CHILD | WS_VISIBLE | WS_BORDER,
                                 80, y, 232, 24,
                                 hwnd, (HMENU) 4, NULL, NULL
                         );
@@ -67,7 +110,7 @@ long PASCAL Login_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
                         );
 
                         CreateWindow(
-                                "Edit", NULL, WS_CHILD | WS_VISIBLE | WS_BORDER | ES_PASSWORD,
+                                "Edit", lastpassword, WS_CHILD | WS_VISIBLE | WS_BORDER | ES_PASSWORD,
                                 80, y, 232, 24,
                                 hwnd, (HMENU) 5, NULL, NULL
                         );
@@ -149,6 +192,7 @@ long PASCAL Login_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
                                                         }
                                                         strtok(Login_tokenbuf, "|");
                                                         Login_done = 1;
+                                                        Login_saveUserData(username, password);
                                                         DestroyWindow(hwnd);
                                                 break;
 
@@ -171,6 +215,7 @@ long PASCAL Login_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
                                                         }
                                                         strtok(Login_tokenbuf, "|");
                                                         Login_done = 1;
+                                                        Login_saveUserData(username, password);
                                                         DestroyWindow(hwnd);
                                                 break;
 
