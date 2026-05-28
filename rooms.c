@@ -15,6 +15,7 @@ char Rooms_roomname[ROOMS_ROOMBUFSIZE] = DEFAULTROOMNAME;
 const char ROOMS_WINCLASS[] = "AUC ROOMS";
 int Rooms_v6socket = -1;
 char Rooms_messagebuffer[MSGBUFSIZE + 1] = {0};
+size_t Rooms_lastmsgbuflen = 0;
 
 long PASCAL Rooms_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
         switch(msg) {
@@ -41,20 +42,26 @@ long PASCAL Rooms_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
 
                         CreateWindow(
                                 "Edit", DEFAULTROOMNAME, WS_CHILD | WS_VISIBLE | WS_BORDER,
-                                8, 0, clrect.right - (256 + 8), 24,
+                                8, 0, clrect.right - (256 + 64 + 8), 24,
                                 hwnd, (HMENU) 2, NULL, NULL
                         );
 
                         CreateWindow(
                                 "Button", "Join Room", WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON,
-                                clrect.right - 256, 0, 128, 24,
+                                clrect.right - (256 + 64), 0, 128, 24,
                                 hwnd, (HMENU) 3, NULL, NULL
                         );
 
                         CreateWindow(
                                 "Button", "List Rooms", WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON,
-                                clrect.right - 128, 0, 128, 24,
+                                clrect.right - (128 + 64), 0, 128, 24,
                                 hwnd, (HMENU) 4, NULL, NULL
+                        );
+
+                        CreateWindow(
+                                "Button", "Clear", WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON,
+                                clrect.right - 64, 0, 64, 24,
+                                hwnd, (HMENU) 7, NULL, NULL
                         );
 
                         CreateWindow(
@@ -112,6 +119,10 @@ long PASCAL Rooms_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
                                                         SetDlgItemText(hwnd, 5, "");
                                                         V6_messagerequest(Login_targetip, Login_httpport, Login_tokenbuf, Rooms_roomname, message);
                                                 } break;
+
+                                                case 7: {
+                                                        Rooms_messagebuffer[0] = 0;
+                                                } break;
                                         }
                                 break;
                         }
@@ -167,10 +178,13 @@ long PASCAL Rooms_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
                                         }
 
                                         edit = GetDlgItem(hwnd, 1);
-                                        SendMessage(edit, EM_GETSEL, (WPARAM) &startsel, (LPARAM) &endsel);
-                                        SetDlgItemText(hwnd, 1, Rooms_messagebuffer);
-                                        SendMessage(edit, EM_SETSEL, startsel, endsel);
-                                        SendMessage(edit, EM_SCROLLCARET, 0, 0);
+                                        if(strlen(Rooms_messagebuffer) != Rooms_lastmsgbuflen) {
+                                                SendMessage(edit, EM_GETSEL, (WPARAM) &startsel, (LPARAM) &endsel);
+                                                SetDlgItemText(hwnd, 1, Rooms_messagebuffer);
+                                                SendMessage(edit, EM_SETSEL, startsel, endsel);
+                                                SendMessage(edit, EM_SCROLLCARET, 0, 0);
+                                                Rooms_lastmsgbuflen = strlen(Rooms_messagebuffer);
+                                        }
                                 } break;
                         }
                 } break;
