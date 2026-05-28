@@ -8,6 +8,7 @@
 
 char Login_tokenbuf[LOGIN_TOKENBUFSIZE] = {0};
 const char LOGIN_WINCLASS[] = "AUC LOGIN";
+const char Login_versionstr[] = "9x v0.1.2";
 
 char Login_targetip[64] = AUC_DEFAULTIP;
 short Login_httpport = AUC_DEFAULTHTTPPORT;
@@ -143,6 +144,12 @@ long PASCAL Login_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
                                 "Button", "9x Client by JakubKwantowy", WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON,
                                 0, clrect.bottom - 32, 320, 32,
                                 hwnd, (HMENU) 6, NULL, NULL
+                        );
+
+                        CreateWindow(
+                                "Static", Login_versionstr, WS_CHILD | WS_VISIBLE | SS_RIGHT,
+                                0, clrect.bottom - 48, clrect.right, 16,
+                                hwnd, 0, NULL, NULL
                         );
                 } break;
 
