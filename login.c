@@ -8,7 +8,7 @@
 
 char Login_tokenbuf[LOGIN_TOKENBUFSIZE] = {0};
 const char LOGIN_WINCLASS[] = "AUC LOGIN";
-const char Login_versionstr[] = "9x v0.1.2";
+const char Login_versionstr[] = "9x v0.1.3";
 
 char Login_targetip[64] = AUC_DEFAULTIP;
 short Login_httpport = AUC_DEFAULTHTTPPORT;

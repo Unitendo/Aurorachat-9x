@@ -133,6 +133,7 @@ long PASCAL Rooms_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
                                 case 1337: {
                                         char buffer[4096] = {0};
                                         char buffer2[4096] = {0};
+                                        char escapebuffer[4096] = {0};
                                         char *rawmsg;
                                         char *user, *message, *channel;
                                         u_long bufsize;
@@ -144,13 +145,51 @@ long PASCAL Rooms_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
                                                 recv(Rooms_v6socket, buffer, 4095, 0);
                                                 rawmsg = buffer;
                                                 while(*rawmsg) {
+                                                        int i;
+                                                        int j = 0;
+                                                        int len;
+                                                    
                                                         user = strtok(rawmsg, "|");
+                                                        if(user == NULL) goto next;
                                                         message = strtok(NULL, "|");
+                                                        if(message == NULL) goto next;
                                                         channel = strtok(NULL, "|");
-                                                        _snprintf(buffer2, 4095, "<%s> %s\r\n", user, message);
+                                                        if(message == NULL) goto next;
+                                                        len = strlen(message);
 
-                                                        if(strncmp(channel, Rooms_roomname, 4096) == 0) 
-                                                                strncat(Rooms_messagebuffer, buffer2, MSGBUFSIZE);
+                                                        if(strncmp(channel, Rooms_roomname, 4096))
+                                                                goto next;
+
+                                                        for(i=0;i<len;i++) {
+                                                                char c = message[i];
+                                                                if(c == '\\') {
+                                                                        char c;
+                                                                        i++;
+                                                                        c = message[i];
+                                                                        switch(c) {
+                                                                                case 'n':
+                                                                                case 'N': {
+                                                                                        escapebuffer[j] = '\r';
+                                                                                        j++;
+                                                                                        escapebuffer[j] = '\n';
+                                                                                        j++;
+                                                                                        escapebuffer[j] = ' ';
+                                                                                        j++;
+                                                                                        escapebuffer[j] = ' ';
+                                                                                } break;
+                                                                            
+                                                                                default: escapebuffer[j] = c;
+                                                                        }
+                                                                } else escapebuffer[j] = c;
+                                                                
+                                                                j++;
+                                                        }
+                                                        escapebuffer[j] = 0;
+                                                        
+                                                        _snprintf(buffer2, 4095, "<%s> %s\r\n", user, escapebuffer); 
+                                                        strncat(Rooms_messagebuffer, buffer2, MSGBUFSIZE);
+
+                                                        next:
 
                                                         rawmsg = channel;
                                                         while(*rawmsg) rawmsg++;
