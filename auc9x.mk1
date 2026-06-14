@@ -24,6 +24,11 @@ d:\aurorachat\rooms.obj : d:\aurorachat\rooms.c .AUTODEPEND
  cd d:\aurorachat
  *wcc386 rooms.c -i=E:\h;E:\h\nt -w4 -e25 -zq -od -d2 -5r -bt=nt -mf
 
+d:\aurorachat\rules.obj : d:\aurorachat\rules.c .AUTODEPEND
+ @d:
+ cd d:\aurorachat
+ *wcc386 rules.c -i=E:\h;E:\h\nt -w4 -e25 -zq -od -d2 -5r -bt=nt -mf
+
 d:\aurorachat\v6.obj : d:\aurorachat\v6.c .AUTODEPEND
  @d:
  cd d:\aurorachat
@@ -37,13 +42,14 @@ r -fo=auc9x.res
 
 d:\aurorachat\auc9x.exe : d:\aurorachat\credits.obj d:\aurorachat\ipsetup.ob&
 j d:\aurorachat\login.obj d:\aurorachat\main.obj d:\aurorachat\rooms.obj d:\&
-aurorachat\v6.obj d:\aurorachat\common.h d:\aurorachat\credits.h d:\aurorach&
-at\ipsetup.h d:\aurorachat\login.h d:\aurorachat\rooms.h d:\aurorachat\v6.h &
-d:\aurorachat\auc9x.res .AUTODEPEND
+aurorachat\rules.obj d:\aurorachat\v6.obj d:\aurorachat\common.h d:\aurorach&
+at\credits.h d:\aurorachat\ipsetup.h d:\aurorachat\login.h d:\aurorachat\roo&
+ms.h d:\aurorachat\rules.h d:\aurorachat\v6.h d:\aurorachat\auc9x.res .AUTOD&
+EPEND
  @d:
  cd d:\aurorachat
  @%write auc9x.lk1 FIL credits.obj,ipsetup.obj,login.obj,main.obj,rooms.obj,&
-v6.obj
+rules.obj,v6.obj
  @%append auc9x.lk1 
 !ifneq BLANK ""
  *wlib -q -n -b auc9x.imp 

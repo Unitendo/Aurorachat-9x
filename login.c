@@ -8,7 +8,7 @@
 
 char Login_tokenbuf[LOGIN_TOKENBUFSIZE] = {0};
 const char LOGIN_WINCLASS[] = "AUC LOGIN";
-const char Login_versionstr[] = "9x v0.1.3";
+const char Login_versionstr[] = "9x v0.1.4";
 
 char Login_targetip[64] = AUC_DEFAULTIP;
 short Login_httpport = AUC_DEFAULTHTTPPORT;
@@ -261,12 +261,14 @@ int Login_main(HANDLE hInst, HANDLE hPrevInst, LPSTR cmdLine, int cmdshow) {
         WNDCLASS wc_rooms = {0};
         WNDCLASS wc_ip = {0};
         WNDCLASS wc_cred = {0};
+        WNDCLASS wc_rules = {0};
         HWND hw;
         MSG msg = {0};
 
         Rooms_init(&wc_rooms, hInst);
         IPSetup_init(&wc_ip, hInst);
         Credits_init(&wc_cred, hInst);
+        Rules_init(&wc_rules, hInst);
 
         Login_createWC(&wc, hInst);
         hw = CreateWindow(

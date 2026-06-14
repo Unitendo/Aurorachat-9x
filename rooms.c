@@ -2,6 +2,7 @@
 #include "common.h"
 #include "v6.h"
 #include "login.h"
+#include "rules.h"
 #include <stdio.h>
 #include <string.h>
 #include <winsock.h>
@@ -17,6 +18,28 @@ int Rooms_v6socket = -1;
 char Rooms_messagebuffer[MSGBUFSIZE + 1] = {0};
 size_t Rooms_lastmsgbuflen = 0;
 
+WNDPROC Rooms_OldMsgEditBoxProc;
+
+long PASCAL Rooms_MsgEditBoxProc(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
+        switch(msg) {
+                case WM_KEYDOWN:
+                        switch(wparam) {
+                                char message[4096];
+                            
+                                case VK_RETURN:
+                                        GetWindowText(hwnd, message, 4095);
+                                        SetWindowText(hwnd, "");
+                                        V6_messagerequest(Login_targetip, Login_httpport, Login_tokenbuf, Rooms_roomname, message);
+                                break;
+                        }
+            
+                default:
+                        return CallWindowProc(Rooms_OldMsgEditBoxProc, hwnd, msg, wparam, lparam);
+        }
+
+        return 0;
+}
+
 long PASCAL Rooms_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
         switch(msg) {
                 case WM_DESTROY:
@@ -24,6 +47,7 @@ long PASCAL Rooms_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
                 break;
 
                 case WM_CREATE: {
+                        HWND hmsginput;
                         RECT clrect;
                         GetClientRect(hwnd, &clrect);
 
@@ -64,7 +88,7 @@ long PASCAL Rooms_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
                                 hwnd, (HMENU) 7, NULL, NULL
                         );
 
-                        CreateWindow(
+                        hmsginput = CreateWindow(
                                 "Edit", NULL, WS_CHILD | WS_VISIBLE | WS_BORDER,
                                 0, clrect.bottom - 24, clrect.right - 64, 24,
                                 hwnd, (HMENU) 5, NULL, NULL
@@ -75,6 +99,8 @@ long PASCAL Rooms_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
                                 clrect.right - 64, clrect.bottom - 24, 64, 24,
                                 hwnd, (HMENU) 6, NULL, NULL
                         );
+
+                        Rooms_OldMsgEditBoxProc = (WNDPROC) SetWindowLong(hmsginput, GWL_WNDPROC, (LONG) Rooms_MsgEditBoxProc);
 
                         SetTimer(hwnd, 1337, TIMERINTERVAL, NULL);
                 } break;
@@ -249,6 +275,8 @@ void Rooms_init(WNDCLASS *wc, HANDLE hi) {
 int Rooms_main(HANDLE hInst) {
         HWND hw;
         MSG msg = {0};
+
+        Rules_main(hInst);
 
         V6_roomrequest(Login_targetip, Login_httpport, Rooms_roombuf, ROOMS_ROOMBUFSIZE);
         Rooms_v6socket = V6_connect(Login_targetip, Login_tcpport);

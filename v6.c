@@ -52,7 +52,7 @@ void V6_onconnecterr() {
 }
 
 int V6_httppost(
-        const char *host, short port,
+        const char *host, short port, const char *method,
         const char *path, const char *auth, const char *data,
         char *outbuf, size_t outsize
 ) {
@@ -70,7 +70,7 @@ int V6_httppost(
         }
 
         buf[0] = 0;
-        _snprintf(buf2, HTTP_BUFFER_SIZE, "POST %s HTTP/1.0\r\n", path);
+        _snprintf(buf2, HTTP_BUFFER_SIZE, "%s %s HTTP/1.0\r\n", method, path);
         strncat(buf, buf2, HTTP_BUFFER_SIZE);
         if(auth) {
                 _snprintf(buf2, HTTP_BUFFER_SIZE, "Auth: %s\r\n", auth);
@@ -120,7 +120,7 @@ int V6_loginrequest(
 ) {
         char buffer[1024];
         _snprintf(buffer, 1023, "%s|%s", username, password);
-        return V6_httppost(host, port, "/api/login", NULL, buffer, outbuf, outsize);
+        return V6_httppost(host, port, "POST", "/api/login", NULL, buffer, outbuf, outsize);
 }
 
 int V6_signuprequest(
@@ -130,14 +130,14 @@ int V6_signuprequest(
 ) {
         char buffer[1024];
         _snprintf(buffer, 1023, "%s|%s", username, password);
-        return V6_httppost(host, port, "/api/signup", NULL, buffer, outbuf, outsize);
+        return V6_httppost(host, port, "POST", "/api/signup", NULL, buffer, outbuf, outsize);
 }
 
 int V6_roomrequest(
         const char *host, short port,
         char *outbuf, size_t outsize
 ) {
-        return V6_httppost(host, port, "/api/rooms", NULL, NULL, outbuf, outsize);
+        return V6_httppost(host, port, "POST", "/api/rooms", NULL, NULL, outbuf, outsize);
 }
 
 int V6_messagerequest(
@@ -147,6 +147,14 @@ int V6_messagerequest(
         char buffer[8192];
         _snprintf(buffer, 8191, "%s|%s", msg, room);
     
-        return V6_httppost(host, port, "/api/chat", auth, buffer, NULL, 0);
+        return V6_httppost(host, port, "POST", "/api/chat", auth, buffer, NULL, 0);
 }
+
+int V6_rulesrequest(
+        const char *host, short port,
+        const char *auth, char *outbuf, size_t outsize
+) {
+        return V6_httppost(host, port, "GET", "/api/rules", auth, NULL, outbuf, outsize);
+}
+
 

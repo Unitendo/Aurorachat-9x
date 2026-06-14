@@ -8,7 +8,7 @@ extern void V6_end();
 extern int V6_connect(const char *host, short port);
 extern void V6_onconnecterr();
 extern int V6_httppost(
-        const char *host, short port,
+        const char *host, short port, const char *method,
         const char *path, const char *auth, const char *data,
         char *outbuf, size_t outsize
 );
@@ -29,6 +29,10 @@ extern int V6_roomrequest(
 extern int V6_messagerequest(
         const char *host, short port,
         const char *auth, const char *room, const char *msg
+);
+extern int V6_rulesrequest(
+        const char *host, short port,
+        const char *auth, char *outbuf, size_t outsize
 );
 
 #endif
