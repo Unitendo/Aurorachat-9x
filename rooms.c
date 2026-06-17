@@ -110,10 +110,12 @@ long PASCAL Rooms_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
                                 case BN_CLICKED:
                                         switch(LOWORD(wparam)) {
                                                 case 3: {
+                                                        const char *message = "history|2048";
                                                         GetDlgItemText(hwnd, 2, Rooms_roomname, ROOMS_ROOMBUFSIZE - 1);
                                                         strncpy(Rooms_messagebuffer, "Auc9x: Joined #", MSGBUFSIZE);
                                                         strncat(Rooms_messagebuffer, Rooms_roomname, MSGBUFSIZE);
                                                         strncat(Rooms_messagebuffer, ".\r\n", MSGBUFSIZE);
+                                                        send(Rooms_v6socket, message, strlen(message), 0);
                                                 } break;
 
                                                 case 4: {
@@ -188,6 +190,7 @@ long PASCAL Rooms_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
 
                                                         for(i=0;i<len;i++) {
                                                                 char c = message[i];
+                                                                if(j >= 4095) break;
                                                                 if(c == '\\') {
                                                                         char c;
                                                                         i++;
@@ -197,10 +200,13 @@ long PASCAL Rooms_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
                                                                                 case 'N': {
                                                                                         escapebuffer[j] = '\r';
                                                                                         j++;
+                                                                                        if(j >= 4095) break;
                                                                                         escapebuffer[j] = '\n';
                                                                                         j++;
+                                                                                        if(j >= 4095) break;
                                                                                         escapebuffer[j] = ' ';
                                                                                         j++;
+                                                                                        if(j >= 4095) break;
                                                                                         escapebuffer[j] = ' ';
                                                                                 } break;
                                                                             
@@ -275,6 +281,7 @@ void Rooms_init(WNDCLASS *wc, HANDLE hi) {
 int Rooms_main(HANDLE hInst) {
         HWND hw;
         MSG msg = {0};
+        const char *message = "history|2048";
 
         Rules_main(hInst);
 
@@ -284,6 +291,8 @@ int Rooms_main(HANDLE hInst) {
                 V6_onconnecterr();
                 return 1;
         }
+
+        send(Rooms_v6socket, message, strlen(message), 0);
 
         hw = CreateWindow(
                 ROOMS_WINCLASS, "AuroraChat 9x",
