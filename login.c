@@ -4,11 +4,12 @@
 #include "rooms.h"
 #include "ipsetup.h"
 #include "credits.h"
+#include "rules.h"
 #include <stdio.h>
 
 char Login_tokenbuf[LOGIN_TOKENBUFSIZE] = {0};
 const char LOGIN_WINCLASS[] = "AUC LOGIN";
-const char Login_versionstr[] = "9x v0.1.4";
+const char Login_versionstr[] = "9x v0.1.4-1";
 
 char Login_targetip[64] = AUC_DEFAULTIP;
 short Login_httpport = AUC_DEFAULTHTTPPORT;
@@ -193,8 +194,16 @@ long PASCAL Login_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
                                                                 break;
                                                         if(Login_startswith(Login_tokenbuf, "ERR_") == 0) {
                                                                 char buffer[4096];
-                                                                _snprintf(buffer, 4096, "Login Error: %s", Login_tokenbuf);
-                                                                MessageBox(hwnd, buffer, "Login Error", MB_ICONERROR);
+                                                                char *token;
+                                                                if(Login_startswith(Login_tokenbuf, "ERR_BANNED|") == 0) {
+                                                                        token = strtok(Login_tokenbuf, "|");
+                                                                        token = strtok(NULL, "|");
+                                                                        _snprintf(buffer, 4096, "Ban reason: %s", token);
+                                                                        MessageBox(hwnd, buffer, "You were banned! (lmao)", MB_ICONERROR);
+                                                                } else {
+                                                                        _snprintf(buffer, 4096, "Login Error: %s", Login_tokenbuf);
+                                                                        MessageBox(hwnd, buffer, "Login Error", MB_ICONERROR);
+                                                                }
                                                                 break;
                                                         }
                                                         strtok(Login_tokenbuf, "|");
