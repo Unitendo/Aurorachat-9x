@@ -110,11 +110,12 @@ long PASCAL Rooms_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
                                 case BN_CLICKED:
                                         switch(LOWORD(wparam)) {
                                                 case 3: {
-                                                        const char *message = "history|2048";
+                                                        char message[128] = {0};
                                                         GetDlgItemText(hwnd, 2, Rooms_roomname, ROOMS_ROOMBUFSIZE - 1);
                                                         strncpy(Rooms_messagebuffer, "Auc9x: Joined #", MSGBUFSIZE);
                                                         strncat(Rooms_messagebuffer, Rooms_roomname, MSGBUFSIZE);
                                                         strncat(Rooms_messagebuffer, ".\r\n", MSGBUFSIZE);
+                                                        _snprintf(message, 127, "history|2048|%s", Rooms_roomname);
                                                         send(Rooms_v6socket, message, strlen(message), 0);
                                                 } break;
 
@@ -133,6 +134,7 @@ long PASCAL Rooms_WP(HWND hwnd, unsigned msg, UINT wparam, LONG lparam) {
                                                         for(i=0;i<count;i++) {
                                                                 token = strtok(NULL, "|");
                                                                 if(token == NULL) break;
+                                                                strncat(buffer, "#", ROOMS_ROOMBUFSIZE);
                                                                 strncat(buffer, token, ROOMS_ROOMBUFSIZE);
                                                                 if(i < count - 1)
                                                                         strncat(buffer, "\n", ROOMS_ROOMBUFSIZE);
@@ -281,7 +283,7 @@ void Rooms_init(WNDCLASS *wc, HANDLE hi) {
 int Rooms_main(HANDLE hInst) {
         HWND hw;
         MSG msg = {0};
-        const char *message = "history|2048";
+        const char *message = "history|2048|general";
 
         Rules_main(hInst);
 
